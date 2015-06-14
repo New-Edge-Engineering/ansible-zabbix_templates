@@ -1,0 +1,5 @@
+---
+zabbix_server_host           : "{{ ansible_ssh_host|default(ansible_eth0['ipv4']['address']) }}"
+zabbix_server_url            : "http://{{zabbix_server_host}}/zabbix"
+zabbix_server_front_user     : "Admin"   ## fresh installation default 'Admin' (dont change unless you changed the user)
+zabbix_server_front_pass     : "zabbix"  ## fresh installation default 'Zabbix' (dont change unless you changed the password)

@@ -1,0 +1,42 @@
+{
+    "jsonrpc": "2.0",
+    "method": "configuration.import",
+    "params": {
+        "format": "xml",
+        "source": "{{ aws_template['content'] | regex_replace('"', '\\\\"') | regex_replace('\n', '') }}",
+        "rules": {
+            "groups": {
+                "createMissing": true
+            },
+            "templates": {
+                "createMissing": true,
+                "updateExisting": true
+            },
+            "templateScreens": {
+                "createMissing": true,
+                "updateExisting": true
+            },
+            "templateLinkage": {
+                "createMissing": true
+            },
+            "items": {
+                "createMissing": true,
+                "updateExisting": true
+            },
+            "discoveryRules": {
+                "createMissing": true,
+                "updateExisting": true
+            },
+            "triggers": {
+                "createMissing": true,
+                "updateExisting": true
+            },
+            "graphs": {
+                "createMissing": true,
+                "updateExisting": true
+            }
+        }
+    },
+    "auth": "{{ zabbix_api_auth['json']['result'] }}",
+    "id": 1
+}

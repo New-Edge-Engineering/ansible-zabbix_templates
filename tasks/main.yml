@@ -1,0 +1,57 @@
+---
+- name: zabbix_server | Install pre dependency for Amazon EC2 plugin
+  apt:
+     pkg="{{item}}"
+     state=present
+  with_items:
+     - gcc
+     - make
+     - php5-dev
+     - php-pear
+     #- php5-hash
+  tags: zabbix_server
+
+- name: zabbix_server | Create plugin directory
+  file:
+    path: /etc/zabbix/externalscripts
+    owner: zabbix
+    group: zabbix
+    mode: 600
+    recurse: yes
+    state: directory
+
+- name: zabbix_server | Install plugin
+  get_url:
+    dest: "/etc/zabbix/externalscripts/{{ item }}"
+    url: "http://mikoomi.googlecode.com/svn/plugins/Amazon%20EC2%20Plugin/{{ item }}"
+    owner: zabbix
+    group: zabbix
+    mode: 600
+  with_items:
+    - mikoomi-aws-ec2-overview-plugin.php
+    - mikoomi-aws-ec2-overview-plugin.sh
+
+- name: zabbix_server | get template
+  uri:
+    url: "http://mikoomi.googlecode.com/svn/plugins/Amazon%20EC2%20Plugin/Template_Mikoomi_Amazon_AWS_EC2_export.xml"
+    return_content: yes
+  register: aws_template
+
+- name: zabbix_server | api authentication
+  uri:
+    url: "{{ zabbix_server_url }}/api_jsonrpc.php"
+    HEADER_Content-Type: "application/json"
+    body: "{{ lookup('template', 'authentication.j2') }}"
+    body_format: json
+    method: POST
+    return_content: yes
+  register: zabbix_api_auth
+
+- name: zabbix_server | configure template
+  uri:
+    url: "{{ zabbix_server_url }}/api_jsonrpc.php"
+    HEADER_Content-Type: "application/json"
+    body: "{{ lookup('template', 'configuration_import.j2') }}"
+    body_format: json
+    method: POST
+    return_content: yes

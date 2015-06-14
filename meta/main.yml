@@ -1,0 +1,10 @@
+galaxy_info:
+  author: New Edge Engineering Ltd
+  description: Install and configure Zabbix templates
+  min_ansible_version: 1.6
+  platforms:
+  - name: Ubuntu
+    versions:
+    - precise
+  categories:
+  - monitoring
