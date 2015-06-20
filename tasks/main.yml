@@ -11,18 +11,11 @@
      #- php5-hash
   tags: zabbix_server
 
-- name: zabbix_server | Create plugin directory
-  file:
-    path: /etc/zabbix/externalscripts
-    mode: 755
-    recurse: yes
-    state: directory
-
 - name: zabbix_server | Install plugin
   get_url:
-    dest: "/etc/zabbix/externalscripts/{{ item }}"
+    dest: "/usr/lib/zabbix/externalscripts/{{ item }}"
     url: "http://mikoomi.googlecode.com/svn/plugins/Amazon%20EC2%20Plugin/{{ item }}"
-    mode: 644
+    mode: 755
   with_items:
     - mikoomi-aws-ec2-overview-plugin.php
     - mikoomi-aws-ec2-overview-plugin.sh
