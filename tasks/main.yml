@@ -14,9 +14,7 @@
 - name: zabbix_server | Create plugin directory
   file:
     path: /etc/zabbix/externalscripts
-    owner: zabbix
-    group: zabbix
-    mode: 600
+    mode: 755
     recurse: yes
     state: directory
 
@@ -24,9 +22,7 @@
   get_url:
     dest: "/etc/zabbix/externalscripts/{{ item }}"
     url: "http://mikoomi.googlecode.com/svn/plugins/Amazon%20EC2%20Plugin/{{ item }}"
-    owner: zabbix
-    group: zabbix
-    mode: 600
+    mode: 644
   with_items:
     - mikoomi-aws-ec2-overview-plugin.php
     - mikoomi-aws-ec2-overview-plugin.sh
