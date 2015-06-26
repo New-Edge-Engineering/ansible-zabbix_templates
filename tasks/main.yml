@@ -1,5 +1,5 @@
 ---
-- name: zabbix_server | Install pre dependency for Amazon EC2 plugin
+- name: Zabbix Templates | Install pre dependency for Amazon EC2 plugin
   apt:
      pkg="{{item}}"
      state=present
@@ -8,10 +8,8 @@
      - make
      - php5-dev
      - php-pear
-     #- php5-hash
-  tags: zabbix_server
 
-- name: zabbix_server | Install plugin
+- name: Zabbix Templates | Install plugin
   get_url:
     dest: "/usr/lib/zabbix/externalscripts/{{ item }}"
     url: "http://mikoomi.googlecode.com/svn/plugins/Amazon%20EC2%20Plugin/{{ item }}"
@@ -20,13 +18,13 @@
     - mikoomi-aws-ec2-overview-plugin.php
     - mikoomi-aws-ec2-overview-plugin.sh
 
-- name: zabbix_server | get template
+- name: Zabbix Templates | get template
   uri:
     url: "http://mikoomi.googlecode.com/svn/plugins/Amazon%20EC2%20Plugin/Template_Mikoomi_Amazon_AWS_EC2_export.xml"
     return_content: yes
   register: aws_template
 
-- name: zabbix_server | api authentication
+- name: Zabbix Templates | api authentication
   uri:
     url: "{{ zabbix_server_url }}/api_jsonrpc.php"
     HEADER_Content-Type: "application/json"
@@ -36,7 +34,7 @@
     return_content: yes
   register: zabbix_api_auth
 
-- name: zabbix_server | configure template
+- name: Zabbix Templates | configure template
   uri:
     url: "{{ zabbix_server_url }}/api_jsonrpc.php"
     HEADER_Content-Type: "application/json"
